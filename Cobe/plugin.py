@@ -276,79 +276,10 @@ class Cobe(callbacks.Plugin):
     brainsize = wrap(brainsize, [additional('channel')])
     
     def teach(self, irc, msg, args, channel, text):
-        """[<channel>] <text>
-
-        Teaches the bot <text>. If the channel is not given, the current channel is used.
         """
-        if not channel: # Did the user enter in a channel? If not, set the current channel
-            channel = msg.args[0]
-
-        if not irc.isChannel(msg.args[0]) and irc.isChannel(channel): 
-            # Are we in a channel and is the channel supplied a channel?
-            
-            if os.path.exists(self._getBrainDirectoryForChannel(channel)):
-                # Does this channel have a brain file?
-               
-                text = self._cleanText(text)
-                if text and len(text) > 1 and not text.isspace():
-            
-                    irc.reply("Learning text: {0}".format(text))
-                    cobeBrain = Brain(self._getBrainDirectoryForChannel(channel))
-                    cobeBrain.learn(text)
-                    
-                else:
-        
-                    irc.error(_("No text to learn!"), Raise=True)
-                    
-            else: 
-                # Nope, create one!
-            
-                self.log.info("Non-existent brainfile in {0}!".format(channel))
-                self.log.info("Creating a brainfile now in {0}".format(self._getBrainDirectoryForChannel(channel)))
-                
-                subprocess.getoutput('{0} {1}'.format(self._doCommand(channel), 'init'))
-                
-                text = self._cleanText(text)
-                if text and len(text) > 1 and not text.isspace():
-            
-                    irc.reply("Learning text: {0}".format(text))
-                    cobeBrain = Brain(self._getBrainDirectoryForChannel(channel))
-                    cobeBrain.learn(text)
-                
-                
-        elif os.path.exists(self._getBrainDirectoryForChannel(channel)) and irc.isChannel(channel): 
-            # We are in a channel! Does the brain file exist and are we supplied a channel?
-    
-            text = self._cleanText(text)
-            if text and len(text) > 1 and not text.isspace():
-        
-                irc.reply("Learning text: {0}".format(text))
-                cobeBrain = Brain(self._getBrainDirectoryForChannel(channel))
-                cobeBrain.learn(text)
-        
-            else:
-        
-                irc.error(_("No text to learn!"), Raise=True)
-                
-        elif not os.path.exists(self._getBrainDirectoryForChannel(channel)) and irc.isChannel(channel):
-            # Nope, create one!
-        
-            self.log.info("Non-existent brainfile in {0}!".format(channel))
-            self.log.info("Creating a brainfile now in {0}".format(self._getBrainDirectoryForChannel(channel)))
-            
-            subprocess.getoutput('{0} {1}'.format(self._doCommand(channel), 'init'))
-            
-            text = self._cleanText(text)
-            if text and len(text) > 1 and not text.isspace():
-        
-                irc.reply("Learning text: {0}".format(text))
-                cobeBrain = Brain(self._getBrainDirectoryForChannel(channel))
-                cobeBrain.learn(text)
-                
-        else:
-            irc.error(_("Improper channel given!"), Raise=True)
-            
-    teach = wrap(teach, [('checkCapability', 'admin'), additional('channel'), 'text'])
+        do nothing
+        """
+        print(self._getBrainDirectoryForChannel(channel))
 
     def respond(self, irc, msg, args, channel, text):
         """[<channel>] <text>
