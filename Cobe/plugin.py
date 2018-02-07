@@ -137,36 +137,8 @@ class Cobe(callbacks.Plugin):
         
     def _learn(self, irc, msg, channel, text, probability):
         """Internal method for learning phrases."""
-        
-        if os.path.exists(self._getBrainDirectoryForChannel(channel)):
-            # Does this channel have a directory for the brain file stored and does this file exist?
-            
-            text = self._cleanText(text)
-            
-            if text and len(text) > 1 and not text.isspace():
-        
-                self.log.debug("Learning: {0}".format(text))
-                cobeBrain = Brain(self._getBrainDirectoryForChannel(channel))
-                cobeBrain.learn(text)
-                
-                if random.randint(0, 10000) <= probability:
-                    self._reply(irc, msg, channel, text)
-                
-        else: # Nope, let's make it!
-                        
-            subprocess.getoutput('{0} {1}'.format(self._doCommand(channel), 'init'))
-            
-            text = self._cleanText(text)
-            
-            if text and len(text) > 1 and not text.isspace():
-        
-                self.log.debug("Learning: {0}".format(text))
-                cobeBrain = Brain(self._getBrainDirectoryForChannel(channel))
-                cobeBrain.learn(text)
-                
-                if random.randint(0, 10000) <= probability:
-                    self._reply(irc, msg, channel, text)
-                
+        self.log.debug(self._getBrainDirectoryForChannel(channel))
+
     def _reply(self, irc, msg, channel, text):
         """Send a response to text"""
         
@@ -279,7 +251,7 @@ class Cobe(callbacks.Plugin):
         """
         do nothing
         """
-        print(self._getBrainDirectoryForChannel(channel))
+        self.log.debug(self._getBrainDirectoryForChannel(channel))
 
     def respond(self, irc, msg, args, channel, text):
         """[<channel>] <text>
